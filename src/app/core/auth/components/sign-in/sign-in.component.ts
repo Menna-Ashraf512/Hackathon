@@ -36,7 +36,7 @@ export class SignInComponent {
   
       setTimeout(() => {
         this.isLoading = false; 
-        this.router.navigate(['/signIn']); 
+        this.router.navigate(['/main/home']); 
       }, 1500);
   
     } else {
