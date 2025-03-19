@@ -8,6 +8,7 @@ export const routes: Routes = [
             {path:'audio',loadComponent:()=>import("./features/pages/audio/audio.component").then(e=>e.AudioComponent)},
             {path:'books',loadComponent:()=>import("./features/pages/books/books.component").then(e=>e.BooksComponent)},
             {path:'chat',loadComponent:()=>import("./features/pages/chat/chat.component").then(e=>e.ChatComponent)},
+            {path:'text',loadComponent:()=>import("./features/components/upload-text/upload-text.component").then(e=>e.UploadTextComponent)},
             {path:'setting',loadComponent:()=>import("./features/pages/setting/setting.component").then(e=>e.SettingComponent)},
         ]
     },
