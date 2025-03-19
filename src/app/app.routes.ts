@@ -7,6 +7,8 @@ export const routes: Routes = [
             {path:'home',loadComponent:()=>import("./core/pages/main/home/home.component").then(e=>e.HomeComponent)},
             {path:'audio',loadComponent:()=>import("./features/pages/audio/audio.component").then(e=>e.AudioComponent)},
             {path:'books',loadComponent:()=>import("./features/pages/books/books.component").then(e=>e.BooksComponent)},
+            {path:'chat',loadComponent:()=>import("./features/pages/chat/chat.component").then(e=>e.ChatComponent)},
+            {path:'setting',loadComponent:()=>import("./features/pages/setting/setting.component").then(e=>e.SettingComponent)},
         ]
     },
     {path:'',
