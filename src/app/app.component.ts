@@ -1,9 +1,8 @@
-import { Component, Inject, PLATFORM_ID, afterNextRender } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, afterNextRender, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { initFlowbite } from 'flowbite';
 import { RouterOutlet } from '@angular/router';
-import { NavbarComponent } from "./core/components/navbar/navbar.component";
-import { FooterComponent } from "./core/components/footer/footer.component";
+import { FlowbiteService } from './shared/services/flowbite.service';
 
 @Component({
   selector: 'app-root',
@@ -11,22 +10,21 @@ import { FooterComponent } from "./core/components/footer/footer.component";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'] 
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Hackathon';
+  flowbiteService =inject(FlowbiteService)
+  constructor(){
+    afterNextRender(()=>{
+     initFlowbite();
+    }) 
+   }
 
-  constructor(@Inject(PLATFORM_ID) private platformId: any) {
-    afterNextRender(() => {
-      if (isPlatformBrowser(this.platformId)) {
-        initFlowbite();
-      }
+  ngOnInit(): void {
+    this.flowbiteService.loadFlowbite(flowbite => {
+      // Your custom code here
+      console.log('Flowbite loaded', flowbite);
     });
   }
 
-  loadFlowbite(callback: (flowbite: any) => void) {
-    if (isPlatformBrowser(this.platformId)) {
-      import('flowbite').then(flowbite => {
-        callback(flowbite);
-      });
-    }
+
   }
-}
