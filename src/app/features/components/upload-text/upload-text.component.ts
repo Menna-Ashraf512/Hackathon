@@ -1,5 +1,6 @@
 import { Component, Output,EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { UploadSoundService } from '../../../shared/services/upload-sound/upload-sound.service';
 
 @Component({
   selector: 'app-upload-text',
@@ -17,6 +18,7 @@ export class UploadTextComponent {
   isAudio = false;
   isModalDrag = false;
   selectedParagraph: string | null = null;
+  audio: HTMLAudioElement | null = null;
 
   togglePump() {
     this.isDrawerOpen = !this.isDrawerOpen;
@@ -67,22 +69,36 @@ export class UploadTextComponent {
     this.isAudio = !this.isAudio;
   }
 
+  constructor(private uploadSound: UploadSoundService) {}
+
   readText(text: string) {
-    if (text) {
-      const speech: SpeechSynthesisUtterance = new SpeechSynthesisUtterance(
-        text
-      );
-      speech.lang = 'ar-EG';
-      speech.volume = 1;
-      speech.rate = 1;
-      speech.pitch = 1;
-      window.speechSynthesis.speak(speech);
-    } else {
+    if (!text.trim()) {
       console.log('لا يوجد نص للقراءة!');
+      return;
+    }
+
+    this.uploadSound.getAudio(text).subscribe(
+      (audioBlob) => {
+        if (this.audio) {
+          this.audio.pause();
+        }
+        const audioUrl = URL.createObjectURL(audioBlob);
+        this.audio = new Audio(audioUrl);
+        this.audio.play();
+      },
+      (error) => {
+        console.error('خطأ أثناء استدعاء API الصوت:', error);
+        alert('تعذر تشغيل الصوت، تحقق من الاتصال بالـ API.');
+      }
+    );
+  }
+
+  stopReading() {
+    if (this.audio) {
+      this.audio.pause();
+      this.audio = null;
     }
   }
-  stopReading() {
-    window.speechSynthesis.cancel();
-  }
+
 }
 
